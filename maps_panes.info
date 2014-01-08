@@ -1,0 +1,6 @@
+name = Map Content Panes
+description = Ctools content panes for displaying maps from the University of Iowa.
+core = 7.x
+package = UIowa
+dependencies[] = ctools
+dependencies[] = libraries
