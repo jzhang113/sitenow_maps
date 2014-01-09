@@ -28,7 +28,7 @@
                       fillColor: buildingFillColor,
                       fillOpacity: 0.5,
                       weight: 1
-                  }).addTo(map).bindPopup('<a href="'+Drupal.settings.basePath+index.toLowerCase()+'">'+value+'</a>');
+                  }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+index.toLowerCase()+'">'+value+'</a>');
               }
         });
 
