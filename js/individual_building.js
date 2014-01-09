@@ -1,8 +1,8 @@
 (function($) {
-	Drupal.maps = function() {
+	Drupal.individualBuilding = function() {
     Proj4js.defs["EPSG:3418"] = "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  " 
 
-		var map = L.mapbox.map('building_map')
+		var map = L.mapbox.map('building_map_'+Drupal.settings.abbr)
 		
 		.addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {
         	detectRetina: true
@@ -40,10 +40,10 @@
 
 	}
 
-	Drupal.behaviors.maps = {
+	Drupal.behaviors.individualBuilding = {
     attach: function(context, settings) {
-      $('.pane-individual-building', context).once('maps', function() {
-        Drupal.maps();
+      $('.building_panel_'+settings.abbr, context).once('individualBuilding', function() {
+        Drupal.individualBuilding();
       });
     }
   };

@@ -4,15 +4,6 @@
  * Ctools content type plugin file for a pane displaying an individual building.
  */
 
-function get_building_list(){
-	$buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
-	$returnarray = array();
-	foreach ($buildings->building as $element) {
-		$returnarray[(string)$element->abbreviation] = (string)$element->title;
-	}
-	return $returnarray;
-}
-
 $plugin = array(
   'single' => TRUE,
   'title' => t('Campus Building'),
@@ -85,8 +76,8 @@ function individual_building_render($subtype, $conf, $panel_args, $context = NUL
 	}
 	$block->title = t($info->building->title);
 	$block->content = array(
-		'#prefix' => '<div id="building_panel">',
-		'#markup' => '<div id="building_map" style="width:100%; height:300px"></div>'.$metadata,
+		'#prefix' => '<div class="building_panel_'.$conf['building'].'">',
+		'#markup' => '<div id="building_map_'.$conf['building'].'" style="width:100%; height:300px"></div>'.$metadata,
 		'#suffix' => '</div>',
 	);
 	drupal_add_js(array('abbr' => $conf['building']), 'setting');

@@ -9,3 +9,12 @@ function maps_panes_ctools_plugin_directory($owner, $plugin_type) {
     return 'plugins/' . $plugin_type;
   }
 }
+
+function get_building_list(){
+	$buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
+	$returnarray = array();
+	foreach ($buildings->building as $element) {
+		$returnarray[(string)$element->abbreviation] = (string)$element->title;
+	}
+	return $returnarray;
+}
