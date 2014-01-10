@@ -9,6 +9,7 @@ $plugin = array(
   'title' => t('Campus Building'),
   'description' => t('Shows a map of a campus building.'),
   'category' => t('UIowa'),
+  'required context' => new ctools_context_required(t('Tokens'),'node'),
   'render callback' => 'individual_building_render',
   'admin info' => 'individual_building_admin_info',
   'edit form' => 'individual_building_edit_form',
@@ -68,7 +69,10 @@ function individual_building_edit_form_submit($form, &$form_state) {
  *
  * See ctools_plugin_examples for more advanced info.
  */
-function individual_building_render($subtype, $conf, $panel_args, $context = NULL) {
+function individual_building_render($subtype, &$conf, $panel_args, $context) {
+  if($context->data->field_abbreviation){
+    $conf['building'] = $context->data->field_abbreviation['und'][0]['value'];
+  }
 	$info = simplexml_load_file("http://maps.uiowa.edu/api/v1/".$conf['building']."/detail.xml");
 	$metadata = '';
 	if($conf['address']){
