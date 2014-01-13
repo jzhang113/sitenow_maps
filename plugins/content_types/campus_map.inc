@@ -65,7 +65,7 @@ function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
 	$block->title = t('Campus Map');
 	$block->content = array(
 		'#prefix' => '<div id="campus_map_panel">',
-		'#markup' => '<div id="campus_map" style="height:'.(string)$conf['map_height'].'px;width:100%; ></div>',
+		'#markup' => '<div id="campus_map" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>',
 		'#suffix' => '</div>',
 	);
 	drupal_add_js(array('buildings' => get_building_list()), 'setting');

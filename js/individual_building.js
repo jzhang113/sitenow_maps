@@ -7,16 +7,43 @@
 		.addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {
         	detectRetina: true
     	}));
+    var accessibleLayer = new L.layerGroup();
 
     jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/Base/BaseMap/FeatureServer/0/query?where=BLDABBR+like+%27%%27&outFields=BLDABBR,BLDGNAME,Lati,Longi&f=pjson",
           function(data){
-              var buildingFillColor = '#FEE000';
-              var buildingBorderColor = '#333333';
+            var buildingFillColor = '#FEE000';
+            var buildingBorderColor = '#333333';
+            if(Drupal.settings.other_buildings){
+              $.each(data.features, function(i, item){
+                
+                var destpoints = new Array();
+                var destproj = new Array();
+                var sourcepoints = new Array();
+                if(item.geometry){
+                  sourcepoints = item.geometry.rings[0];
+                    for(var i=0;i<sourcepoints.length;i++){
+                        destproj.push(Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point(sourcepoints[i])));
+                    }
+                    for(var i=0;i<destproj.length;i++){
+                        destpoints.push([destproj[i].y, destproj[i].x]);
+                    }
+                    L.polygon(destpoints,
+                    {   color: buildingBorderColor,
+                        fillColor: buildingFillColor,
+                        fillOpacity: 0.5,
+                        weight: 1
+                    }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+Drupal.settings.abbr+'">'+item.attributes.BLDGNAME+'</a>');
+                }
+                if(item.attributes.BLDABBR == Drupal.settings.abbr){
+                  map.setView([item.attributes.Lati,item.attributes.Longi], 17);
+                }
+              });
+            }
+            else{
               var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BLDABBR == Drupal.settings.abbr});
               var destpoints = new Array();
               var destproj = new Array();
               var sourcepoints = new Array();
-              console.log();
               if(arcdata[0]){
                   sourcepoints = arcdata[0].geometry.rings[0];
                   for(var i=0;i<sourcepoints.length;i++){
@@ -31,12 +58,41 @@
                       fillOpacity: 0.5,
                       weight: 1
                   }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+Drupal.settings.abbr+'">'+arcdata[0].attributes.BLDGNAME+'</a>');;
-
               }
-              map.setView([arcdata[0].attributes.Lati,arcdata[0].attributes.Longi], 17)
-              
+              map.setView([arcdata[0].attributes.Lati,arcdata[0].attributes.Longi], 17);
+            }
           }, "json"
       );
+      if(Drupal.settings.accessible_entrances){
+        jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/DataWithoutScaledSymbology/AccessibilityOnCampusWOB_NotGrouped/MapServer/0/query?where=Ent_Type+%3D+%27y%2Cy%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=BLDGNUM%2C+Ent_Type&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson",
+            function(data){
+                var geoJson = [];
+                for(var i = 0; i < data.features.length; i++){
+                    var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.x,data.features[i].geometry.y] ));
+                    var marker = {
+                      type:'Feature',
+                      "geometry":{"type":"Point","coordinates": [point.x, point.y]},
+                      "properties":{
+                        'marker-symbol':'disability',
+                        'marker-size':'small',
+                        'marker-color':'#0074D9'
+                      }
+                    }
+                    geoJson.push(marker);
+                }      
+                map.markerLayer.setGeoJSON(geoJson);        
+            }, "json"
+        );
+
+        map.on('zoomend', function(e){
+            if(this.getZoom() >= 16){
+                this.addLayer(map.markerLayer);
+            }
+            else{
+                this.removeLayer(map.markerLayer);
+            }
+        });
+      }
 
 	}
 

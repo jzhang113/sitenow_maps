@@ -15,7 +15,10 @@ $plugin = array(
   'edit form' => 'individual_building_edit_form',
   'defaults' => array(
   	'building' => '',
-  	'address' => 1
+  	'address' => 1,
+    'map_height' => '300',
+    'other_buildings' => 0,
+    'accessible_entrances' => 0
   )
 );
 
@@ -44,11 +47,33 @@ function individual_building_edit_form($form, &$form_state) {
     '#options' => get_building_list(),
     '#default_value' => $conf['building'],
   );
+  //Set the height of the map
+  $form['map_height'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Map Height'),
+    '#description' => t('Set the height of the map in pixels.'),
+    '#default_value' => $conf['map_height'],
+  );
+  //Choose whether to show the street address or not
   $form['address'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Address'),
     '#description' => t('Check this box to display the building\'s street address'),
     '#default_value' => $conf['address'],
+  );
+  //Choose whether to show other buildings
+  $form['other_buildings'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show Other Buildings'),
+    '#description' => t('Check this box to show other buildings on the map, centering it on the current building'),
+    '#default_value' => $conf['other_buildings'],
+  );
+  //Choose whether to show other buildings
+  $form['accessible_entrances'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show All Accessible Entrances'),
+    '#description' => t('Check this box to show all accessible entrances on campus'),
+    '#default_value' => $conf['accessible_entrances'],
   );
   return $form;
 }
@@ -81,10 +106,12 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
 	$block->title = t($info->building->title);
 	$block->content = array(
 		'#prefix' => '<div class="building_panel_'.$conf['building'].'">',
-		'#markup' => '<div id="building_map_'.$conf['building'].'" style="width:100%; height:300px"></div>'.$metadata,
+		'#markup' => '<div id="building_map_'.$conf['building'].'" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>'.$metadata,
 		'#suffix' => '</div>',
 	);
 	drupal_add_js(array('abbr' => $conf['building']), 'setting');
+  drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
+  drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.css', 'external');
 	drupal_add_js(drupal_get_path('module', 'maps_panes') . '/js/proj4js-compressed.js');
