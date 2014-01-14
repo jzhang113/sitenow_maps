@@ -1,5 +1,5 @@
-name = Map Content Panes
+name = Sitenow Map Panes
 description = Ctools content panes for displaying maps from the University of Iowa.
 core = 7.x
-package = UIowa
+package = Sitenow
 dependencies[] = ctools

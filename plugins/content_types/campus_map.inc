@@ -8,7 +8,7 @@ $plugin = array(
   'single' => TRUE,
   'title' => t('Campus Map'),
   'description' => t('Shows a map of all campus buildings.'),
-  'category' => t('UIowa'),
+  'category' => t('Sitenow'),
   'render callback' => 'campus_map_render',
   'admin info' => 'campus_map_admin_info',
   'edit form' => 'campus_map_edit_form',
@@ -71,7 +71,7 @@ function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
 	drupal_add_js(array('buildings' => get_building_list()), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.css', 'external');
-	drupal_add_js(drupal_get_path('module', 'maps_panes') . '/js/proj4js-compressed.js');
-	drupal_add_js(drupal_get_path('module', 'maps_panes') . '/js/campus_map.js');
+	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/proj4js-compressed.js');
+	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/campus_map.js');
 	return $block;
 }

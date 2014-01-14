@@ -8,7 +8,7 @@ $plugin = array(
   'single' => TRUE,
   'title' => t('Campus Building'),
   'description' => t('Shows a map of a campus building.'),
-  'category' => t('UIowa'),
+  'category' => t('Sitenow'),
   'required context' => new ctools_context_required(t('Tokens'),'node'),
   'render callback' => 'individual_building_render',
   'admin info' => 'individual_building_admin_info',
@@ -114,7 +114,7 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.css', 'external');
-	drupal_add_js(drupal_get_path('module', 'maps_panes') . '/js/proj4js-compressed.js');
-	drupal_add_js(drupal_get_path('module', 'maps_panes') . '/js/individual_building.js');
+	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/proj4js-compressed.js');
+	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
 	return $block;
 }
