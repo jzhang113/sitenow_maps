@@ -109,8 +109,12 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
 		'#markup' => '<div id="building_map_'.$conf['building'].'" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>'.$metadata,
 		'#suffix' => '</div>',
 	);
+  
 	drupal_add_js(array('abbr' => $conf['building']), 'setting');
+  drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
+  drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
+  if($conf['other_buildings']) drupal_add_js(array('all_buildings' => get_building_list()), 'setting');
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.css', 'external');

@@ -13,14 +13,15 @@
           function(data){
             var buildingFillColor = '#FEE000';
             var buildingBorderColor = '#333333';
+            map.setView([Drupal.settings.latitude[0],Drupal.settings.longitude[0]], 17);
             if(Drupal.settings.other_buildings){
-              $.each(data.features, function(i, item){
-                
+              $.each(Drupal.settings.all_buildings, function(index,value){
+                var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BLDABBR == index});
                 var destpoints = new Array();
                 var destproj = new Array();
                 var sourcepoints = new Array();
-                if(item.geometry){
-                  sourcepoints = item.geometry.rings[0];
+                if(arcdata[0]){
+                  sourcepoints = arcdata[0].geometry.rings[0];
                     for(var i=0;i<sourcepoints.length;i++){
                         destproj.push(Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point(sourcepoints[i])));
                     }
@@ -32,10 +33,7 @@
                         fillColor: buildingFillColor,
                         fillOpacity: 0.5,
                         weight: 1
-                    }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+Drupal.settings.abbr+'">'+item.attributes.BLDGNAME+'</a>');
-                }
-                if(item.attributes.BLDABBR == Drupal.settings.abbr){
-                  map.setView([item.attributes.Lati,item.attributes.Longi], 17);
+                    }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+index.toLowerCase()+'">'+value+'</a>');
                 }
               });
             }
