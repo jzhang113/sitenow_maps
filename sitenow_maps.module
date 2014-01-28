@@ -10,6 +10,8 @@ function sitenow_maps_ctools_plugin_directory($owner, $plugin_type) {
   }
 }
 
+// Global function to grab the listing of buildings from the maps site. Building listing inception!
+
 function get_building_list(){
 	$buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
 	$returnarray = array();

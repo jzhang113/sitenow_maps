@@ -1,12 +1,16 @@
 (function($) {
 	Drupal.individualBuilding = function() {
+    
+    //Geo translation for the ArcGIS data
     Proj4js.defs["EPSG:3418"] = "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  " 
 
+    //Generates the Mapbox map
 		var map = L.mapbox.map('building_map_'+Drupal.settings.abbr)
-		
-		.addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {
+      .addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {
         	detectRetina: true
-    	}));
+      }));
+
+    //New layer for the accessible entrances
     var accessibleLayer = new L.layerGroup();
 
     jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/Base/BaseMap/FeatureServer/0/query?where=BLDABBR+like+%27%%27&outFields=BLDABBR,BLDGNAME,Lati,Longi&f=pjson",
@@ -61,6 +65,8 @@
             }
           }, "json"
       );
+
+
       if(Drupal.settings.accessible_entrances){
         jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/DataWithoutScaledSymbology/AccessibilityOnCampusWOB_NotGrouped/MapServer/0/query?where=Ent_Type+%3D+%27y%2Cy%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=BLDGNUM%2C+Ent_Type&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson",
             function(data){
@@ -81,7 +87,8 @@
                 map.markerLayer.setGeoJSON(geoJson);        
             }, "json"
         );
-
+        
+        //Hides the accessible entrances on zoomed out levels
         map.on('zoomend', function(e){
             if(this.getZoom() >= 16){
                 this.addLayer(map.markerLayer);

@@ -95,11 +95,15 @@ function individual_building_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info.
  */
 function individual_building_render($subtype, &$conf, $panel_args, $context) {
+  //Checks to see if a token context exists and if so, if a field called field_abbreviation exists. If so, it defines the building code to that allowing for dynamic setting of the building map
   if($context->data->field_abbreviation){
     $conf['building'] = $context->data->field_abbreviation['und'][0]['value'];
   }
+
+  // Loads the building data from the maps site. More building data inception!
 	$info = simplexml_load_file("http://maps.uiowa.edu/api/v1/".$conf['building']."/detail.xml");
-	$metadata = '';
+	
+  $metadata = '';
 	if($conf['address']){
 		$metadata .= '<p>Address: '.t($info->building->address).'</p>';
 	}
@@ -116,8 +120,8 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
   if($conf['other_buildings']) drupal_add_js(array('all_buildings' => get_building_list()), 'setting');
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
-	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.js', 'external');
-	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.5.2/mapbox.css', 'external');
+	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js', 'external');
+	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css', 'external');
 	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/proj4js-compressed.js');
 	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
 	return $block;
