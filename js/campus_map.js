@@ -9,10 +9,10 @@
 		  .addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {detectRetina: true}))
       .setView([41.660070, -91.538403], 15);
 
-    /*L.control.layers({
+    L.control.layers({
     }, {
-        'Campus Zones': L.mapbox.tileLayer('uiowa-its.strj06kw')
-    }).addTo(map);*/
+        'Campus Zones': L.mapbox.tileLayer('uiowa-its.kb2u4jhb')
+    }).addTo(map);
 
     //Disables the scroll wheel, will make an option later on
     map.scrollWheelZoom.disable();
