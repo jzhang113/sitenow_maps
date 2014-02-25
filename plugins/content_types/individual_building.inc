@@ -96,13 +96,13 @@ function individual_building_edit_form_submit($form, &$form_state) {
  */
 function individual_building_render($subtype, &$conf, $panel_args, $context) {
   //Checks to see if a token context exists and if so, if a field called field_abbreviation exists. If so, it defines the building code to that allowing for dynamic setting of the building map
-  if($context->data->field_abbreviation){
-    $conf['building'] = $context->data->field_abbreviation['und'][0]['value'];
+  if (isset($context->data->field_abbreviation)) {
+    $conf['building'] = $context->data->field_abbreviation[LANGUAGE_NONE][0]['value'];
   }
 
   // Loads the building data from the maps site. More building data inception!
 	$info = simplexml_load_file("http://maps.uiowa.edu/api/v1/".$conf['building']."/detail.xml");
-	
+
   $metadata = '';
 	if($conf['address']){
 		$metadata .= '<p>Address: '.t($info->building->address).'</p>';
@@ -113,7 +113,7 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
 		'#markup' => '<div id="building_map_'.$conf['building'].'" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>'.$metadata,
 		'#suffix' => '</div>',
 	);
-  
+
 	drupal_add_js(array('abbr' => $conf['building']), 'setting');
   drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
   drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
