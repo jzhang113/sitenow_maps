@@ -17,7 +17,7 @@
     //Disables the scroll wheel, will make an option later on
     map.scrollWheelZoom.disable();
     
-    jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/Base/BaseMap/FeatureServer/0/query?where=BLDABBR+like+%27%%27&outFields=BLDABBR&f=pjson",
+    jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
         function(data){
           jQuery.each(Drupal.settings.buildings, function(index,value){
             var buildingFillColor = '#FFE100';
@@ -42,8 +42,6 @@
                   }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+index.toLowerCase()+'">'+value+'</a>');
               }
         });
-
-          
         }, "json"
     );
 	}

@@ -13,7 +13,7 @@
     //New layer for the accessible entrances
     var accessibleLayer = new L.layerGroup();
 
-    jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/Base/BaseMap/FeatureServer/0/query?where=BLDABBR+like+%27%%27&outFields=BLDABBR,BLDGNAME,Lati,Longi&f=pjson",
+    jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
             var buildingFillColor = '#FEE000';
             var buildingBorderColor = '#333333';
@@ -68,7 +68,7 @@
 
 
       if(Drupal.settings.accessible_entrances){
-        jQuery.get("https://maps.facilities.uiowa.edu/arcgis/rest/services/DataWithoutScaledSymbology/AccessibilityOnCampusWOB_NotGrouped/MapServer/0/query?where=Ent_Type+%3D+%27y%2Cy%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=BLDGNUM%2C+Ent_Type&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson",
+        jQuery.get("http://data.its.uiowa.edu/maps/arc-accessible-entrances",
             function(data){
                 var geoJson = [];
                 for(var i = 0; i < data.features.length; i++){
