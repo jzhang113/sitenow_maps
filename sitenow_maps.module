@@ -9,9 +9,3 @@ function sitenow_maps_ctools_plugin_directory($owner, $plugin_type) {
     return 'plugins/' . $plugin_type;
   }
 }
-
-
-function sitenow_maps_building_list(){
-	$returnarray = array();
-	return $returnarray;
-}

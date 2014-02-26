@@ -68,7 +68,7 @@ function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
 		'#markup' => '<div id="campus_map" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>',
 		'#suffix' => '</div>',
 	);
-	drupal_add_js(array('buildings' => sitenow_maps_building_list()), 'setting');
+	//drupal_add_js(array('buildings' => sitenow_maps_building_list()), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css', 'external');
 	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/proj4js-compressed.js');
