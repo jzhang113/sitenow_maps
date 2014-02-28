@@ -12,27 +12,26 @@
      
 
     var blueCapsLayer = L.mapbox.featureLayer();
+
     L.control.layers(
         {},
         {
           'Campus Zones':L.mapbox.tileLayer('uiowa-its.kb2u4jhb'),
           'Code Blue Phones':blueCapsLayer
         }
-    ).addTo(map);
+    ).addTo(map)
 
     jQuery.get("http://data.its.uiowa.edu/maps/arc-bluecaps",
       function(data){
            
           var blueCaps = [];
           for(var i = 0; i < data.features.length; i++){
-              
               var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.paths[0][0][0],data.features[i].geometry.paths[0][0][1]] ));
-              
               var marker = {
                 type:'Feature',
                 "geometry":{"type":"Point","coordinates": [point.x, point.y]},
                 "properties":{
-                  
+                  title:data.features[i].attributes.Location,
                   'marker-size':'small',
                   'marker-color':'#0074D9'
                 }
