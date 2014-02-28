@@ -84,7 +84,7 @@
                     }
                     geoJson.push(marker);
                 }      
-                map.markerLayer.setGeoJSON(geoJson);        
+                map.featureLayer.setGeoJSON(geoJson);        
             }, "json"
         );
         

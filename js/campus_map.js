@@ -9,10 +9,40 @@
 		  .addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {detectRetina: true}))
       .setView([41.660070, -91.538403], 15);
 
-    L.control.layers({
-    }, {
-        'Campus Zones': L.mapbox.tileLayer('uiowa-its.kb2u4jhb')
-    }).addTo(map);
+     
+
+    var blueCapsLayer = L.mapbox.featureLayer();
+    L.control.layers(
+        {},
+        {
+          'Campus Zones':L.mapbox.tileLayer('uiowa-its.kb2u4jhb'),
+          'Code Blue Phones':blueCapsLayer
+        }
+    ).addTo(map);
+
+    jQuery.get("http://data.its.uiowa.edu/maps/arc-bluecaps",
+      function(data){
+           
+          var blueCaps = [];
+          for(var i = 0; i < data.features.length; i++){
+              
+              var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.paths[0][0][0],data.features[i].geometry.paths[0][0][1]] ));
+              
+              var marker = {
+                type:'Feature',
+                "geometry":{"type":"Point","coordinates": [point.x, point.y]},
+                "properties":{
+                  
+                  'marker-size':'small',
+                  'marker-color':'#0074D9'
+                }
+              }
+              blueCaps.push(marker);
+          }
+          blueCapsLayer.setGeoJSON(blueCaps);
+      }, "json");
+
+    
 
     //Disables the scroll wheel, will make an option later on
     map.scrollWheelZoom.disable();
