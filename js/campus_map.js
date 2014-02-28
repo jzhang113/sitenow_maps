@@ -32,6 +32,7 @@
                 "geometry":{"type":"Point","coordinates": [point.x, point.y]},
                 "properties":{
                   title:data.features[i].attributes.Location,
+                  'marker-symbol':'emergency-telephone',
                   'marker-size':'small',
                   'marker-color':'#0074D9'
                 }
