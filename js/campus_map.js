@@ -52,7 +52,7 @@
           jQuery.each(Drupal.settings.buildings, function(index,value){
             var buildingFillColor = '#FFE100';
             var buildingBorderColor = '#101010';
-            var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BLDABBR == index});
+            var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
             var destpoints = new Array();
               var destproj = new Array();
               var sourcepoints = new Array();
