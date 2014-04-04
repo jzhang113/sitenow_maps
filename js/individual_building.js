@@ -20,7 +20,7 @@
             map.setView([Drupal.settings.latitude[0],Drupal.settings.longitude[0]], 17);
             if(Drupal.settings.other_buildings){
               $.each(Drupal.settings.all_buildings, function(index,value){
-                var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BLDABBR == index});
+                var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
                 var destpoints = new Array();
                 var destproj = new Array();
                 var sourcepoints = new Array();
@@ -42,7 +42,7 @@
               });
             }
             else{
-              var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BLDABBR == Drupal.settings.abbr});
+              var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == Drupal.settings.abbr});
               var destpoints = new Array();
               var destproj = new Array();
               var sourcepoints = new Array();
