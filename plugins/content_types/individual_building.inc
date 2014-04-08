@@ -44,7 +44,7 @@ function individual_building_edit_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Building'),
     '#description' => t('Select which building to show'),
-    '#options' => get_building_list(),
+    '#options' => sitenow_maps_building_list(),
     '#default_value' => $conf['building'],
   );
   //Set the height of the map
@@ -114,6 +114,8 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
 		'#suffix' => '</div>',
 	);
 
+  proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
+
 	drupal_add_js(array('abbr' => $conf['building']), 'setting');
   drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
   drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
@@ -122,7 +124,6 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
 	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js', 'external');
 	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css', 'external');
-	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/proj4js-compressed.js');
 	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
 	return $block;
 }
