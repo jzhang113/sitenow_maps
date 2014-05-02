@@ -122,8 +122,8 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
   if($conf['other_buildings']) drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
-	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js', 'external');
-	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css', 'external');
+	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
+	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
 	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
 	return $block;
 }

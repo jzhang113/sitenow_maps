@@ -15,8 +15,7 @@
 
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
-            var buildingFillColor = '#FEE000';
-            var buildingBorderColor = '#333333';
+            
             map.setView([Drupal.settings.latitude[0],Drupal.settings.longitude[0]], 17);
             if(Drupal.settings.other_buildings){
               $.each(Drupal.settings.all_buildings, function(index,value){
@@ -32,11 +31,23 @@
                     for(var i=0;i<destproj.length;i++){
                         destpoints.push([destproj[i].y, destproj[i].x]);
                     }
+                    if(Drupal.settings.abbr == index){
+                      var buildingFillColor = '#FEE100';
+                      var buildingBorderColor = '#000000';
+                      var buildingFillOpacity = 0.8;
+                      var buildingLineWeight = 2;
+                    }
+                    else{
+                      var buildingFillColor = '#81642B';
+                      var buildingBorderColor = '#333333';
+                      var buildingFillOpacity = 0.5;
+                      var buildingLineWeight = 1;
+                    }
                     L.polygon(destpoints,
                     {   color: buildingBorderColor,
                         fillColor: buildingFillColor,
-                        fillOpacity: 0.5,
-                        weight: 1
+                        fillOpacity: buildingFillOpacity,
+                        weight: buildingLineWeight
                     }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+index.toLowerCase()+'">'+value+'</a>');
                 }
               });
