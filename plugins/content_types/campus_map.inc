@@ -62,6 +62,7 @@ function campus_map_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info.
  */
 function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
+  $block = new stdClass();
   $block->title = t('Campus Map');
   $block->content = array(
     '#prefix' => '<div id="campus_map_panel">',
