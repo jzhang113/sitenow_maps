@@ -4,18 +4,23 @@
  * Module file for signage uiowa panes module.
  */
 
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
 function sitenow_maps_ctools_plugin_directory($owner, $plugin_type) {
   if ($owner == 'ctools' && $plugin_type == 'content_types') {
     return 'plugins/' . $plugin_type;
   }
 }
 
-
-function sitenow_maps_building_list(){
-	$buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
-	$returnarray = array();
-	foreach ($buildings->building as $element) {
-		$returnarray[(string)$element->abbreviation] = (string)$element->title;
-	}
-	return $returnarray;
+/**
+ * Helper function to return a list of buildings from maps.uiowa.edu.
+ */
+function sitenow_maps_building_list() {
+  $buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
+  $returnarray = array();
+  foreach ($buildings->building as $element) {
+    $returnarray[(string) $element->abbreviation] = (string) $element->title;
+  }
+  return $returnarray;
 }

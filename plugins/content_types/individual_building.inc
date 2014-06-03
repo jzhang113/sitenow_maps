@@ -9,17 +9,17 @@ $plugin = array(
   'title' => t('Campus Building'),
   'description' => t('Shows a map of a campus building.'),
   'category' => t('Sitenow'),
-  'required context' => new ctools_context_required(t('Tokens'),'node'),
+  'required context' => new ctools_context_required(t('Tokens'), 'node'),
   'render callback' => 'individual_building_render',
   'admin info' => 'individual_building_admin_info',
   'edit form' => 'individual_building_edit_form',
   'defaults' => array(
-  	'building' => '',
-  	'address' => 1,
+    'building' => '',
+    'address' => 1,
     'map_height' => '300',
     'other_buildings' => 0,
-    'accessible_entrances' => 0
-  )
+    'accessible_entrances' => 0,
+  ),
 );
 
 /**
@@ -39,7 +39,7 @@ function individual_building_info($subtype, $conf, $contexts) {
  */
 function individual_building_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
-  //Create select list for which building to show
+  // Create select list for which building to show.
   $form['building'] = array(
     '#type' => 'select',
     '#title' => t('Building'),
@@ -47,28 +47,28 @@ function individual_building_edit_form($form, &$form_state) {
     '#options' => sitenow_maps_building_list(),
     '#default_value' => $conf['building'],
   );
-  //Set the height of the map
+  // Set the height of the map.
   $form['map_height'] = array(
     '#type' => 'textfield',
     '#title' => t('Map Height'),
     '#description' => t('Set the height of the map in pixels.'),
     '#default_value' => $conf['map_height'],
   );
-  //Choose whether to show the street address or not
+  // Choose whether to show the street address or not.
   $form['address'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Address'),
-    '#description' => t('Check this box to display the building\'s street address'),
+    '#description' => t("Check this box to display the building's street address"),
     '#default_value' => $conf['address'],
   );
-  //Choose whether to show other buildings
+  // Choose whether to show other buildings.
   $form['other_buildings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Other Buildings'),
     '#description' => t('Check this box to show other buildings on the map, centering it on the current building'),
     '#default_value' => $conf['other_buildings'],
   );
-  //Choose whether to show other buildings
+  // Choose whether to show other buildings.
   $form['accessible_entrances'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show All Accessible Entrances'),
@@ -95,35 +95,40 @@ function individual_building_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info.
  */
 function individual_building_render($subtype, &$conf, $panel_args, $context) {
-  //Checks to see if a token context exists and if so, if a field called field_abbreviation exists. If so, it defines the building code to that allowing for dynamic setting of the building map
+  // Checks to see if a token context exists and if so, if a field called
+  // field_abbreviation exists. If so, it defines the building code to that
+  // allowing for dynamic setting of the building map.
   if (isset($context->data->field_abbreviation)) {
     $conf['building'] = $context->data->field_abbreviation[LANGUAGE_NONE][0]['value'];
   }
 
   // Loads the building data from the maps site. More building data inception!
-	$info = simplexml_load_file("http://maps.uiowa.edu/api/v1/".$conf['building']."/detail.xml");
+  $info = simplexml_load_file("http://maps.uiowa.edu/api/v1/" . $conf['building'] . "/detail.xml");
 
   $metadata = '';
-	if($conf['address']){
-		$metadata .= '<p>Address: '.t($info->building->address).'</p>';
-	}
-	$block->title = t($info->building->title);
-	$block->content = array(
-		'#prefix' => '<div class="building_panel_'.$conf['building'].'">',
-		'#markup' => '<div id="building_map_'.$conf['building'].'" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>'.$metadata,
-		'#suffix' => '</div>',
-	);
+  if ($conf['address']) {
+    $metadata .= '<p>Address: ' . t('@address', array('@address' => $info->building->address)) . '</p>';
+  }
+  $block = new stdClass();
+  $block->title = t('@title', array('@title' => $info->building->title));
+  $block->content = array(
+    '#prefix' => '<div class="building_panel_' . $conf['building'] . '">',
+    '#markup' => '<div id="building_map_' . $conf['building'] . '" style="height:' . (string) $conf['map_height'] . 'px;width:100%;"></div>' . $metadata,
+    '#suffix' => '</div>',
+  );
 
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
 
-	drupal_add_js(array('abbr' => $conf['building']), 'setting');
+  drupal_add_js(array('abbr' => $conf['building']), 'setting');
   drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
   drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
-  if($conf['other_buildings']) drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
+  if ($conf['other_buildings']) {
+    drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
+  }
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
-	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
-	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
-	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
-	return $block;
+  drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
+  drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
+  drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
+  return $block;
 }
