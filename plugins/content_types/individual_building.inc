@@ -109,6 +109,7 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   if ($conf['address']) {
     $metadata .= '<p>Address: ' . t('@address', array('@address' => $info->building->address)) . '</p>';
   }
+  $block = new stdClass();
   $block->title = t('@title', array('@title' => $info->building->title));
   $block->content = array(
     '#prefix' => '<div class="building_panel_' . $conf['building'] . '">',
