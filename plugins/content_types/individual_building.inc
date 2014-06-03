@@ -14,12 +14,12 @@ $plugin = array(
   'admin info' => 'individual_building_admin_info',
   'edit form' => 'individual_building_edit_form',
   'defaults' => array(
-  	'building' => '',
-  	'address' => 1,
+    'building' => '',
+    'address' => 1,
     'map_height' => '300',
     'other_buildings' => 0,
-    'accessible_entrances' => 0
-  )
+    'accessible_entrances' => 0,
+  ),
 );
 
 /**
