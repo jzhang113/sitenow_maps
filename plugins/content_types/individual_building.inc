@@ -39,7 +39,7 @@ function individual_building_info($subtype, $conf, $contexts) {
  */
 function individual_building_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
-  //Create select list for which building to show
+  // Create select list for which building to show.
   $form['building'] = array(
     '#type' => 'select',
     '#title' => t('Building'),
@@ -47,28 +47,28 @@ function individual_building_edit_form($form, &$form_state) {
     '#options' => sitenow_maps_building_list(),
     '#default_value' => $conf['building'],
   );
-  //Set the height of the map
+  // Set the height of the map.
   $form['map_height'] = array(
     '#type' => 'textfield',
     '#title' => t('Map Height'),
     '#description' => t('Set the height of the map in pixels.'),
     '#default_value' => $conf['map_height'],
   );
-  //Choose whether to show the street address or not
+  // Choose whether to show the street address or not.
   $form['address'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Address'),
     '#description' => t('Check this box to display the building\'s street address'),
     '#default_value' => $conf['address'],
   );
-  //Choose whether to show other buildings
+  // Choose whether to show other buildings.
   $form['other_buildings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Other Buildings'),
     '#description' => t('Check this box to show other buildings on the map, centering it on the current building'),
     '#default_value' => $conf['other_buildings'],
   );
-  //Choose whether to show other buildings
+  // Choose whether to show other buildings.
   $form['accessible_entrances'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show All Accessible Entrances'),
