@@ -103,29 +103,29 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   }
 
   // Loads the building data from the maps site. More building data inception!
-	$info = simplexml_load_file("http://maps.uiowa.edu/api/v1/".$conf['building']."/detail.xml");
+  $info = simplexml_load_file("http://maps.uiowa.edu/api/v1/" . $conf['building'] . "/detail.xml");
 
   $metadata = '';
-	if($conf['address']){
-		$metadata .= '<p>Address: '.t($info->building->address).'</p>';
-	}
-	$block->title = t($info->building->title);
-	$block->content = array(
-		'#prefix' => '<div class="building_panel_'.$conf['building'].'">',
-		'#markup' => '<div id="building_map_'.$conf['building'].'" style="height:'.(string)$conf['map_height'].'px;width:100%;"></div>'.$metadata,
-		'#suffix' => '</div>',
-	);
+  if ($conf['address']) {
+    $metadata .= '<p>Address: ' . t('@address', array('@address' => $info->building->address)) . '</p>';
+  }
+  $block->title = t('@title', array('@title' => $info->building->title));
+  $block->content = array(
+    '#prefix' => '<div class="building_panel_' . $conf['building'] . '">',
+    '#markup' => '<div id="building_map_' . $conf['building'] . '" style="height:' . (string) $conf['map_height'] . 'px;width:100%;"></div>' . $metadata,
+    '#suffix' => '</div>',
+  );
 
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
 
-	drupal_add_js(array('abbr' => $conf['building']), 'setting');
+  drupal_add_js(array('abbr' => $conf['building']), 'setting');
   drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
   drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
   if($conf['other_buildings']) drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
-	drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
-	drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
-	drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
-	return $block;
+  drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
+  drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
+  drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');
+  return $block;
 }
