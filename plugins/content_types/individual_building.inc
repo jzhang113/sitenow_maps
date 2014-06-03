@@ -98,7 +98,7 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   // Checks to see if a token context exists and if so, if a field called
   // field_abbreviation exists. If so, it defines the building code to that
   // allowing for dynamic setting of the building map.
-  if (isset($context->data->field_abbreviation)) {
+  if (!empty($context->data->field_abbreviation)) {
     $conf['building'] = $context->data->field_abbreviation[LANGUAGE_NONE][0]['value'];
   }
 
