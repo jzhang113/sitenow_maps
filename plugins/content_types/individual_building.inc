@@ -58,7 +58,7 @@ function individual_building_edit_form($form, &$form_state) {
   $form['address'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show Address'),
-    '#description' => t('Check this box to display the building\'s street address'),
+    '#description' => t("Check this box to display the building's street address"),
     '#default_value' => $conf['address'],
   );
   // Choose whether to show other buildings.
