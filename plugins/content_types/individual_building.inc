@@ -29,7 +29,7 @@ function individual_building_info($subtype, $conf, $contexts) {
   if (!empty($conf)) {
     $block = new stdClass();
     $block->title = $conf['override_title'] ? $conf['override_title_text'] : '';
-    $block->content = t('The University of Iowa nameplate.');
+    $block->content = t('A map of a University of Iowa building.');
     return $block;
   }
 }
