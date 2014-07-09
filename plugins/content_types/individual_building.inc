@@ -9,12 +9,13 @@ $plugin = array(
   'title' => t('Campus Building'),
   'description' => t('Shows a map of a campus building.'),
   'category' => t('Sitenow'),
-  'required context' => new ctools_context_required(t('Tokens'), 'node'),
+  'all contexts' => TRUE,
   'render callback' => 'individual_building_render',
   'admin info' => 'individual_building_admin_info',
   'edit form' => 'individual_building_edit_form',
   'defaults' => array(
     'building' => '',
+    'building_override' => '',
     'address' => 1,
     'map_height' => '300',
     'other_buildings' => 0,
@@ -46,6 +47,20 @@ function individual_building_edit_form($form, &$form_state) {
     '#description' => t('Select which building to show'),
     '#options' => sitenow_maps_building_list(),
     '#default_value' => $conf['building'],
+  );
+  // Create select list for which building to show.
+  $form['building_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Building - Advanced Override'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Override.
+  $form['building_set']['building_override'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Building'),
+    '#description' => t('Provide a field context or manual overide. You may use context keywords.'),
+    '#default_value' => $conf['building_override'],
   );
   // Set the height of the map.
   $form['map_height'] = array(
@@ -95,15 +110,21 @@ function individual_building_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info.
  */
 function individual_building_render($subtype, &$conf, $panel_args, $context) {
-  // Checks to see if a token context exists and if so, if a field called
-  // field_abbreviation exists. If so, it defines the building code to that
-  // allowing for dynamic setting of the building map.
-  if (!empty($context->data->field_abbreviation)) {
-    $conf['building'] = $context->data->field_abbreviation[LANGUAGE_NONE][0]['value'];
+  // Set the building variable from conf.
+  $building = $conf['building'];
+
+  if(!empty($conf['building_override'])) {
+    // If the building override field is not empty, get any ctools context
+    // keyword substitutions.
+    $building = ctools_context_keyword_substitute($conf['building_override'], array(), $context);
+    if(empty($building)) {
+      // If there are no context values, return.
+      return;
+    };
   }
 
   // Loads the building data from the maps site. More building data inception!
-  $info = simplexml_load_file("http://maps.uiowa.edu/api/v1/" . $conf['building'] . "/detail.xml");
+  $info = simplexml_load_file("http://maps.uiowa.edu/api/v1/" . $building . "/detail.xml");
 
   $metadata = '';
   if ($conf['address']) {
@@ -112,14 +133,14 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   $block = new stdClass();
   $block->title = t('@title', array('@title' => $info->building->title));
   $block->content = array(
-    '#prefix' => '<div class="building_panel_' . $conf['building'] . '">',
-    '#markup' => '<div id="building_map_' . $conf['building'] . '" style="height:' . (string) $conf['map_height'] . 'px;width:100%;"></div>' . $metadata,
+    '#prefix' => '<div class="building_panel_' . $building . '">',
+    '#markup' => '<div id="building_map_' . $building . '" style="height:' . (string) $conf['map_height'] . 'px;width:100%;"></div>' . $metadata,
     '#suffix' => '</div>',
   );
 
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
 
-  drupal_add_js(array('abbr' => $conf['building']), 'setting');
+  drupal_add_js(array('abbr' => $building), 'setting');
   drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
   drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
   drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
