@@ -9,12 +9,13 @@ $plugin = array(
   'title' => t('Map Point'),
   'description' => t('Shows a map of a latitude/longitude point using the university map tiles.'),
   'category' => t('Sitenow'),
+  'all contexts' => TRUE,
   'render callback' => 'pin_render',
   'admin info' => 'pin_admin_info',
   'edit form' => 'pin_edit_form',
   'defaults' => array(
-    'latitude' => '41.661335',
-    'longitude' => '-91.536096',
+    'latitude' => '',
+    'longitude' => '',
     'map_height' => '300',
     'buildings' => 0,
     'accessible_entrances' => 0,
@@ -29,7 +30,7 @@ function pin_info($subtype, $conf, $contexts) {
   if (!empty($conf)) {
     $block = new stdClass();
     $block->title = $conf['override_title'] ? $conf['override_title_text'] : '';
-    $block->content = t('A map of a University of Iowa building.');
+    $block->content = t('A map of a point on the University of Iowa map.');
     return $block;
   }
 }
@@ -103,6 +104,17 @@ function pin_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info.
  */
 function pin_render($subtype, &$conf, $panel_args, $context) {
+  // Search the values of the latitude and longitude fields for any ctools
+  // context keywords to substitute.
+  $latitude = check_plain(ctools_context_keyword_substitute($conf['latitude'], array(), $context));
+  $longitude = check_plain(ctools_context_keyword_substitute($conf['longitude'], array(), $context));
+  $popup_text = check_plain(ctools_context_keyword_substitute($conf['popup_text'], array(), $context));
+
+  if(empty($latitude) || empty($longitude)) {
+    // If either the latitude or longitude values are empty, return.
+    return;
+  }
+
   $block = new stdClass();
 
   $block->content = array(
@@ -112,8 +124,8 @@ function pin_render($subtype, &$conf, $panel_args, $context) {
   );
 
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
-  drupal_add_js(array('sitenowMaps' => array('latitude' => check_plain($conf['latitude']))), 'setting');
-  drupal_add_js(array('sitenowMaps' => array('longitude' => check_plain($conf['longitude']))), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('latitude' => $latitude)), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('longitude' => $longitude)), 'setting');
   if($conf['popup_text']) {
       drupal_add_js(array('sitenowMaps' => array('popup_text' => check_plain($conf['popup_text']))), 'setting');
   }
