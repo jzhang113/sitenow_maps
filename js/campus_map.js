@@ -1,47 +1,54 @@
 (function($) {
 	Drupal.campusMap = function() {
-    //Generates the Mapbox map
-		var map = L.mapbox.map('campus_map')
-		  .addLayer(L.mapbox.tileLayer('uiowa-its.map-6ve6jxun', {detectRetina: true}))
-      .setView([41.660070, -91.538403], 15);
-
-     
-
-    var blueCapsLayer = L.mapbox.featureLayer();
-
-    L.control.layers(
-        {},
+    var map;
+    var MY_MAPTYPE_ID = 'custom_style';
+    var featureOpts = [
         {
-          'Campus Zones':L.mapbox.tileLayer('uiowa-its.kb2u4jhb'),
-          'Code Blue Phones':blueCapsLayer
+          "stylers": [
+            { "visibility": "off" },
+          ]
+        },
+        {
+          "featureType": "road",
+          "stylers": [
+            { "visibility": "on" }
+          ]
+        },
+        {
+          "featureType": "landscape",
+          "stylers": [
+            { "visibility": "on" }
+          ]
+        },
+        {
+          "featureType": "water",
+          "stylers": [
+            { "visibility": "on" }
+          ]
+        },
+        {
+          "featureType": "landscape.man_made",
+          "stylers": [
+            { "visibility": "off" }
+          ]
         }
-    ).addTo(map)
+      ];
 
-    jQuery.get("http://data.its.uiowa.edu/maps/arc-bluecaps",
-      function(data){
-           
-          var blueCaps = [];
-          for(var i = 0; i < data.features.length; i++){
-              var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.paths[0][0][0],data.features[i].geometry.paths[0][0][1]] ));
-              var marker = {
-                type:'Feature',
-                "geometry":{"type":"Point","coordinates": [point.x, point.y]},
-                "properties":{
-                  title:data.features[i].attributes.Location,
-                  'marker-symbol':'emergency-telephone',
-                  'marker-size':'small',
-                  'marker-color':'#0074D9'
-                }
-              }
-              blueCaps.push(marker);
-          }
-          blueCapsLayer.setGeoJSON(blueCaps);
-      }, "json");
+      var mapOptions = {
+        zoom: 15,
+        center: new google.maps.LatLng(41.660070, -91.538403),
+        mapTypeId: MY_MAPTYPE_ID,
+        disableDefaultUI: true
+      };
+      map = new google.maps.Map(document.getElementById('campus_map'), mapOptions);
 
-    
+      var styledMapOptions = {
+        name: 'Custom Style'
+      };
 
-    //Disables the scroll wheel, will make an option later on
-    map.scrollWheelZoom.disable();
+      var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+
+      map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
     
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
         function(data){
@@ -58,16 +65,25 @@
                     destproj.push(Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point(sourcepoints[i])));
                 }
                 for(var i=0;i<destproj.length;i++){
-                    destpoints.push([destproj[i].y, destproj[i].x]);
+                  destpoints.push(new google.maps.LatLng(destproj[i].y, destproj[i].x));
                 }
-                L.polygon(destpoints,
-                  {   color: buildingBorderColor,
-                      fillColor: buildingFillColor,
-                      fillOpacity: 0.5,
-                      weight: 1
-                  }).addTo(map).bindPopup('<a href="http://maps.uiowa.edu/'+index.toLowerCase()+'">'+value+'</a>');
+                building = new google.maps.Polygon({
+                  paths: destpoints,
+                  strokeColor: '#000000',
+                  strokeWeight: 1,
+                  fillColor: '#FEE100',
+                  fillOpacity: 0.6
+                });
+                building.setMap(map);
+
+                google.maps.event.addListener(building, 'click', function(event){
+                  infoWindow = new google.maps.InfoWindow();
+                  infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="http://maps.uiowa.edu/'+index+'">'+value+'</a></strong></p>');
+                  infoWindow.setPosition(event.latLng);
+                  infoWindow.open(map);
+                });
               }
-        });
+          });
         }, "json"
     );
 	}

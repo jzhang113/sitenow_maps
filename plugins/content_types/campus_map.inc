@@ -73,8 +73,7 @@ function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
 
   drupal_add_js(array('buildings' => sitenow_maps_building_list()), 'setting');
-  drupal_add_js('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js', 'external');
-  drupal_add_css('http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css', 'external');
+  drupal_add_js('https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACV3y6WAUNmC4zok1_VwoKx60qpyZE9sU', 'external');
   drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/campus_map.js');
   return $block;
 }
