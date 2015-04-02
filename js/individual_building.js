@@ -90,6 +90,12 @@
                       fillOpacity: buildingFillOpacity
                     });
                     building.setMap(map);
+                    google.maps.event.addListener(building, 'click', function(event){
+                      infoWindow = new google.maps.InfoWindow();
+                      infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="'+Drupal.settings.basePath+index+'">'+value+'</a></strong></p>');
+                      infoWindow.setPosition(event.latLng);
+                      infoWindow.open(map);
+                    });
                   }
               });
             }
@@ -108,9 +114,9 @@
                     }
                   building = new google.maps.Polygon({
                     paths: destpoints,
-                    strokeColor: buildingBorderColor,
+                    strokeColor: '#000000',
                     strokeWeight: 1,
-                    fillColor: buildingFillColor,
+                    fillColor: '#FEE100',
                     fillOpacity: 0.6
                   });
                   building.setMap(map);
@@ -120,6 +126,40 @@
           }, "json"
       );
 
+      var entrances = [];
+
+      if(Drupal.settings.accessible_entrances){
+        jQuery.get("http://data.its.uiowa.edu/maps/arc-accessible-entrances",
+            function(data){
+              for(var i = 0; i < data.features.length; i++){
+                  var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.x,data.features[i].geometry.y] ));
+                  var image = 'http://maps.uiowa.edu/files/maps.uiowa.edu/files/styles/large/public/disability.png';
+                  var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(point.y, point.x),
+                    map: map,
+                    icon: image
+                  });
+                  entrances.push(marker);
+              }
+              setAllMap(map);
+            }, "json"
+        );
+      }
+
+      google.maps.event.addListener(map, 'zoom_changed', function() {
+        if(map.getZoom() >= 16){
+          setAllMap(map);
+        }
+        else{
+          setAllMap(null);
+        }
+      });
+
+      function setAllMap(map){
+        for (var i = 0; i < entrances.length; i++) {
+          entrances[i].setMap(map);
+        }
+      }
 	}
 
 	Drupal.behaviors.individualBuilding = {
