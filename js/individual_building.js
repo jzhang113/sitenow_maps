@@ -92,7 +92,7 @@
                     building.setMap(map);
                     google.maps.event.addListener(building, 'click', function(event){
                       infoWindow = new google.maps.InfoWindow();
-                      infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="'+Drupal.settings.basePath+index+'">'+value+'</a></strong></p>');
+                      infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="http://maps.uiowa.edu/">'+value+'</a></strong></p>');
                       infoWindow.setPosition(event.latLng);
                       infoWindow.open(map);
                     });
@@ -120,6 +120,12 @@
                     fillOpacity: 0.6
                   });
                   building.setMap(map);
+                  google.maps.event.addListener(building, 'click', function(event){
+                    infoWindow = new google.maps.InfoWindow();
+                    infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="http://maps.uiowa.edu/">'+value+'</a></strong></p>');
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+                  });
               }
               map.setView([arcdata[0].attributes.Lati,arcdata[0].attributes.Longi], 17);
             }
