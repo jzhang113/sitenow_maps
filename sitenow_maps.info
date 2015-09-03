@@ -5,3 +5,4 @@ core = 7.x
 package = Sitenow
 dependencies[] = ctools
 dependencies[] = proj4js
+dependencies[] = field
