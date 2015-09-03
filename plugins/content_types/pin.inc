@@ -110,7 +110,7 @@ function pin_render($subtype, &$conf, $panel_args, $context) {
   $longitude = check_plain(ctools_context_keyword_substitute($conf['longitude'], array(), $context));
   $popup_text = check_plain(ctools_context_keyword_substitute($conf['popup_text'], array(), $context));
 
-  if(empty($latitude) || empty($longitude)) {
+  if (empty($latitude) || empty($longitude)) {
     // If either the latitude or longitude values are empty, return.
     return;
   }
@@ -126,8 +126,8 @@ function pin_render($subtype, &$conf, $panel_args, $context) {
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
   drupal_add_js(array('sitenowMaps' => array('latitude' => $latitude)), 'setting');
   drupal_add_js(array('sitenowMaps' => array('longitude' => $longitude)), 'setting');
-  if($conf['popup_text']) {
-      drupal_add_js(array('sitenowMaps' => array('popup_text' => check_plain($conf['popup_text']))), 'setting');
+  if ($conf['popup_text']) {
+    drupal_add_js(array('sitenowMaps' => array('popup_text' => check_plain($conf['popup_text']))), 'setting');
   }
 
   drupal_add_js(array('buildings' => $conf['buildings']), 'setting');
