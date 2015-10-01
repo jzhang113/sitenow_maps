@@ -1,0 +1,8 @@
+{
+    "name": "its-uofiowa/sitenow_maps",
+    "description": "Ctools content panes for displaying maps from the University of Iowa.",
+    "type": "drupal-module",
+    "require": {
+      "composer/installers": "*"
+    }
+}
