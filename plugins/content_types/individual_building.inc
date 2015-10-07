@@ -113,11 +113,11 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   // Set the building variable from conf.
   $building = $conf['building'];
 
-  if(!empty($conf['building_override'])) {
+  if (!empty($conf['building_override'])) {
     // If the building override field is not empty, get any ctools context
     // keyword substitutions.
     $building = ctools_context_keyword_substitute($conf['building_override'], array(), $context);
-    if(empty($building)) {
+    if (empty($building)) {
       // If there are no context values, return.
       return;
     };
