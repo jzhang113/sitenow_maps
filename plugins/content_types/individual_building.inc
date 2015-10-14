@@ -149,17 +149,17 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
 
   proj4js_load_definition("EPSG:3418", "+title=Iowa South (ft US) +proj=lcc +lat_1=41.78333333333333 +lat_2=40.61666666666667 +lat_0=40 +lon_0=-93.5 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs  ");
 
-  drupal_add_js(array('abbr' => $building), 'setting');
-  drupal_add_js(array('latitude' => $info->building->latitude), 'setting');
-  drupal_add_js(array('longitude' => $info->building->longitude), 'setting');
-  drupal_add_js(array('other_buildings' => $conf['other_buildings']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('abbr' => $building)), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('latitude' => $info->building->latitude)), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('longitude' => $info->building->longitude)), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('other_buildings' => $conf['other_buildings'])), 'setting');
   if ($conf['other_buildings']) {
-    drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
+    drupal_add_js(array('sitenowMaps' => array('all_buildings' => sitenow_maps_building_list())), 'setting');
   }
-  drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('accessible_entrances' => $conf['accessible_entrances'])), 'setting');
 
   // Pass in the scrollwheel zoom settings.
-  drupal_add_js(array('scrollwheel' => !isset($conf['scrollwheel']) ? 1 : $conf['scrollwheel']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('scrollwheel' => !isset($conf['scrollwheel']) ? 1 : $conf['scrollwheel'])), 'setting');
 
   drupal_add_js('https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyACV3y6WAUNmC4zok1_VwoKx60qpyZE9sU', 'external');
   drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/individual_building.js');

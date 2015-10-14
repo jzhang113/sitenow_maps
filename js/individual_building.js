@@ -36,12 +36,12 @@
 
       var mapOptions = {
         zoom: 17,
-        center: new google.maps.LatLng(Drupal.settings.latitude[0], Drupal.settings.longitude[0]),
+        center: new google.maps.LatLng(Drupal.settings.sitenowMaps.latitude[0], Drupal.settings.sitenowMaps.longitude[0]),
         mapTypeId: MY_MAPTYPE_ID,
         disableDefaultUI: true,
-        scrollwheel: Drupal.settings.scrollwheel
+        scrollwheel: Drupal.settings.sitenowMaps.scrollwheel
       };
-      map = new google.maps.Map(document.getElementById('building_map_'+Drupal.settings.abbr), mapOptions);
+      map = new google.maps.Map(document.getElementById('building_map_'+Drupal.settings.sitenowMaps.abbr), mapOptions);
 
       var styledMapOptions = {
         name: 'Custom Style'
@@ -56,8 +56,8 @@
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
 
-             if(Drupal.settings.other_buildings){
-              $.each(Drupal.settings.all_buildings, function(index,value){
+             if(Drupal.settings.sitenowMaps.other_buildings){
+              $.each(Drupal.settings.sitenowMaps.all_buildings, function(index,value){
                 var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
                 var destpoints = new Array();
                 var destproj = new Array();
@@ -70,7 +70,7 @@
                     for(var i=0;i<destproj.length;i++){
                       destpoints.push(new google.maps.LatLng(destproj[i].y, destproj[i].x));
                     }
-                    if(Drupal.settings.abbr == index){
+                    if(Drupal.settings.sitenowMaps.abbr == index){
                       var buildingFillColor = '#FEE100';
                       var buildingBorderColor = '#000000';
                       var buildingFillOpacity = 0.8;
@@ -101,7 +101,7 @@
               });
             }
             else{
-              var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == Drupal.settings.abbr});
+              var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == Drupal.settings.sitenowMaps.abbr});
               var destpoints = new Array();
               var destproj = new Array();
               var sourcepoints = new Array();
@@ -135,7 +135,7 @@
 
       var entrances = [];
 
-      if(Drupal.settings.accessible_entrances){
+      if(Drupal.settings.sitenowMaps.accessible_entrances){
         jQuery.get("http://data.its.uiowa.edu/maps/arc-accessible-entrances",
             function(data){
               for(var i = 0; i < data.features.length; i++){
@@ -171,7 +171,8 @@
 
 	Drupal.behaviors.individualBuilding = {
     attach: function(context, settings) {
-      $('.building_panel_'+settings.abbr, context).once('individualBuilding', function() {
+      console.log(settings);
+      $('.building_panel_'+settings.sitenowMaps.abbr, context).once('individualBuilding', function() {
         Drupal.individualBuilding();
       });
     }
