@@ -39,7 +39,7 @@
         center: new google.maps.LatLng(41.660070, -91.538403),
         mapTypeId: MY_MAPTYPE_ID,
         disableDefaultUI: true,
-        scrollwheel: Drupal.settings.scrollwheel
+        scrollwheel: Drupal.settings.sitenowMaps.scrollwheel
       };
       map = new google.maps.Map(document.getElementById('campus_map'), mapOptions);
 
@@ -53,7 +53,7 @@
 
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
         function(data){
-          jQuery.each(Drupal.settings.buildings, function(index,value){
+          jQuery.each(Drupal.settings.sitenowMaps.buildings, function(index,value){
             var buildingFillColor = '#FFE100';
             var buildingBorderColor = '#101010';
             var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
