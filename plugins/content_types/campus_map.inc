@@ -36,6 +36,7 @@ function campus_map_info($subtype, $conf, $contexts) {
  */
 function campus_map_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
+
   // Create select list for which building to show.
   $form['map_height'] = array(
     '#type' => 'textfield',
@@ -43,6 +44,7 @@ function campus_map_edit_form($form, &$form_state) {
     '#description' => t('Set the height of the map in pixels.'),
     '#default_value' => $conf['map_height'],
   );
+
   // Choose whether to allow scroll wheel zoom.
   $form['scrollwheel'] = array(
     '#type' => 'checkbox',
@@ -50,6 +52,7 @@ function campus_map_edit_form($form, &$form_state) {
     '#description' => t('Check this box to allow the mouse scrollwheel to zoom the map'),
     '#default_value' => $conf['scrollwheel'],
   );
+
   return $form;
 }
 
@@ -71,7 +74,9 @@ function campus_map_edit_form_submit($form, &$form_state) {
  */
 function campus_map_render($subtype, $conf, $panel_args, $context = NULL) {
   $block = new stdClass();
+
   $block->title = t('Campus Map');
+
   $block->content = array(
     '#prefix' => '<div id="campus_map_panel">',
     '#markup' => '<div id="campus_map" style="height:' . (string) $conf['map_height'] . 'px;width:100%;"></div>',
