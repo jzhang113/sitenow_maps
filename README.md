@@ -28,6 +28,8 @@ You can also dynamically set which building to show. To do this, set the
 Building - Advanced Options Building field to a panels context keyword of your
 choice on the pane configuration.
 
+There is also a field type that will allow you to select a campus building from a list and display either the building's abbreviation or name. This can be used alone or to piggyback off the map pane.
+
 ## Map Point
 The map point pane allows you to set a latitude and longitude point to render on
 the map. You can optionally set popup text when the point is clicked.
