@@ -38,7 +38,8 @@
         zoom: 17,
         center: new google.maps.LatLng(Drupal.settings.latitude[0], Drupal.settings.longitude[0]),
         mapTypeId: MY_MAPTYPE_ID,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        scrollwheel: Drupal.settings.scrollwheel
       };
       map = new google.maps.Map(document.getElementById('building_map_'+Drupal.settings.abbr), mapOptions);
 

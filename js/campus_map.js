@@ -38,7 +38,8 @@
         zoom: 15,
         center: new google.maps.LatLng(41.660070, -91.538403),
         mapTypeId: MY_MAPTYPE_ID,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        scrollwheel: Drupal.settings.scrollwheel
       };
       map = new google.maps.Map(document.getElementById('campus_map'), mapOptions);
 
