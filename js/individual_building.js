@@ -55,7 +55,7 @@
 
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
-          
+
              if(Drupal.settings.other_buildings){
               $.each(Drupal.settings.all_buildings, function(index,value){
                 var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
@@ -82,7 +82,7 @@
                       var buildingFillOpacity = 0.5;
                       var buildingLineWeight = 1;
                     }
-          
+
                     building = new google.maps.Polygon({
                       paths: destpoints,
                       strokeColor: buildingBorderColor,

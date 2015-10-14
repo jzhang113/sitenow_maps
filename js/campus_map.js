@@ -50,7 +50,7 @@
       var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
 
       map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
-    
+
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
         function(data){
           jQuery.each(Drupal.settings.buildings, function(index,value){
