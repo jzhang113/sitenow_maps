@@ -39,7 +39,7 @@
         center: new google.maps.LatLng(Drupal.settings.sitenowMaps.latitude, Drupal.settings.sitenowMaps.longitude),
         mapTypeId: MY_MAPTYPE_ID,
         disableDefaultUI: true,
-        scrollwheel: Drupal.settings.scrollwheel
+        scrollwheel: Drupal.settings.sitenowMaps.scrollwheel
       };
       map = new google.maps.Map(document.getElementById('pin_map'), mapOptions);
 
@@ -56,8 +56,8 @@
     jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
 
-             if(Drupal.settings.all_buildings){
-              $.each(Drupal.settings.all_buildings, function(index,value){
+             if(Drupal.settings.sitenowMaps.all_buildings){
+              $.each(Drupal.settings.sitenowMaps.all_buildings, function(index,value){
                 var arcdata = jQuery.grep(data.features, function(e){ return e.attributes.BuildingAbbreviation == index});
                 var destpoints = new Array();
                 var destproj = new Array();
@@ -134,7 +134,7 @@
 
       var entrances = [];
 
-      if(Drupal.settings.accessible_entrances){
+      if(Drupal.settings.sitenowMaps.accessible_entrances){
         jQuery.get("http://data.its.uiowa.edu/maps/arc-accessible-entrances",
             function(data){
               for(var i = 0; i < data.features.length; i++){

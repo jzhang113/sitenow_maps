@@ -139,14 +139,14 @@ function pin_render($subtype, &$conf, $panel_args, $context) {
     drupal_add_js(array('sitenowMaps' => array('popup_text' => check_plain($conf['popup_text']))), 'setting');
   }
 
-  drupal_add_js(array('buildings' => $conf['buildings']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('buildings' => $conf['buildings'])), 'setting');
   if ($conf['buildings']) {
-    drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
+    drupal_add_js(array('sitenowMaps' => array('all_buildings' => sitenow_maps_building_list())), 'setting');
   }
-  drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('accessible_entrances' => $conf['accessible_entrances'])), 'setting');
 
   // Pass in the scrollwheel zoom settings.
-  drupal_add_js(array('scrollwheel' => !isset($conf['scrollwheel']) ? 1 : $conf['scrollwheel']), 'setting');
+  drupal_add_js(array('sitenowMaps' => array('scrollwheel' => !isset($conf['scrollwheel']) ? 1 : $conf['scrollwheel'])), 'setting');
 
   drupal_add_js('https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyACV3y6WAUNmC4zok1_VwoKx60qpyZE9sU', 'external');
   drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/pin.js');
