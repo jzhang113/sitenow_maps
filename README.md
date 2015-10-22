@@ -1,10 +1,10 @@
 # University of Iowa Map Panes
 
-This module allows you to add a panel pane of either a campus map or an
-individual building. Built using the CTools Content Type, each type of pane has
-some configuration options.
+This module allows you to add a panel pane of a campus map, an
+individual building, or a lat/long pin. Built using the CTools Content Type,
+each type of pane has some configuration options:
 
-The maps are built using the [Mapbox.js](https://www.mapbox.com/mapbox.js/)
+The maps are built using the [Google Maps API](https://developers.google.com/maps/documentation/javascript/)
 library with the buildings added using data from the Facilities ArcGIS server.
 
 ## Campus Map
@@ -28,7 +28,9 @@ You can also dynamically set which building to show. To do this, set the
 Building - Advanced Options Building field to a panels context keyword of your
 choice on the pane configuration.
 
-There is also a field type that will allow you to select a campus building from a list and display either the building's abbreviation or name. This can be used alone or to piggyback off the map pane.
+There is also a field type that will allow you to select a campus building from
+a list and display either the building's abbreviation or name. This can be used
+alone or to piggyback off the map pane.
 
 ## Map Point
 The map point pane allows you to set a latitude and longitude point to render on
