@@ -20,6 +20,7 @@ $plugin = array(
     'buildings' => 0,
     'accessible_entrances' => 0,
     'popup_text' => '',
+    'scrollwheel' => 1,
   ),
 );
 
@@ -84,6 +85,14 @@ function pin_edit_form($form, &$form_state) {
     '#description' => t('Check this box to show all accessible entrances on campus.'),
     '#default_value' => $conf['accessible_entrances'],
   );
+  // Choose whether to allow scroll wheel zoom.
+  $form['scrollwheel'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow Scrollwheel Zoom'),
+    '#description' => t('Check this box to allow the mouse scrollwheel to zoom the map'),
+    '#default_value' => $conf['scrollwheel'],
+  );
+
   return $form;
 }
 
@@ -135,6 +144,10 @@ function pin_render($subtype, &$conf, $panel_args, $context) {
     drupal_add_js(array('all_buildings' => sitenow_maps_building_list()), 'setting');
   }
   drupal_add_js(array('accessible_entrances' => $conf['accessible_entrances']), 'setting');
+
+  // Pass in the scrollwheel zoom settings.
+  drupal_add_js(array('scrollwheel' => !isset($conf['scrollwheel']) ? 1 : $conf['scrollwheel']), 'setting');
+
   drupal_add_js('https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyACV3y6WAUNmC4zok1_VwoKx60qpyZE9sU', 'external');
   drupal_add_js(drupal_get_path('module', 'sitenow_maps') . '/js/pin.js');
   return $block;
