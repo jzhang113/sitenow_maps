@@ -69,7 +69,7 @@ function sitenow_maps_field_widget_form(&$form, &$form_state, $field, $instance,
         '#options' => $buildings,
         '#empty_value' => '',
         '#required' => $element['#required'],
-        '#default_value' => isset($items[$delta]['sitenow_map']['value']) ? $items[$delta]['sitenow_map']['value'] : NULL,
+        '#default_value' => isset($items[$delta]['value']) ? $items[$delta]['value'] : $instance['default_value'][0]['sitenow_map']['value'],
       );
       break;
   }
