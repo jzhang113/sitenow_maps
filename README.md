@@ -2,7 +2,9 @@
 
 This module allows you to add a panel pane of a campus map, an
 individual building, or a lat/long pin. Built using the CTools Content Type,
-each type of pane has some configuration options:
+each type of pane has some configuration options.
+
+This module also provides a SiteNow Maps field type, which allows you to render an individual building as a field.
 
 The maps are built using the [Google Maps API](https://developers.google.com/maps/documentation/javascript/)
 library with the buildings added using data from the Facilities ArcGIS server.
