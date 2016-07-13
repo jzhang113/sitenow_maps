@@ -53,7 +53,7 @@
 
 
 
-    jQuery.get("http://data.its.uiowa.edu/maps/arc-buildings",
+    jQuery.get("https://data.its.uiowa.edu/maps/arc-buildings",
           function(data){
 
              if(Drupal.settings.other_buildings){
@@ -136,7 +136,7 @@
       var entrances = [];
 
       if(Drupal.settings.accessible_entrances){
-        jQuery.get("http://data.its.uiowa.edu/maps/arc-accessible-entrances",
+        jQuery.get("https://data.its.uiowa.edu/maps/arc-accessible-entrances",
             function(data){
               for(var i = 0; i < data.features.length; i++){
                   var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.x,data.features[i].geometry.y] ));
