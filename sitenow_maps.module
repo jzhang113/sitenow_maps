@@ -17,7 +17,7 @@ function sitenow_maps_ctools_plugin_directory($owner, $plugin_type) {
  * Helper function to return a list of buildings from maps.uiowa.edu.
  */
 function sitenow_maps_building_list() {
-  $buildings = simplexml_load_file("http://maps.uiowa.edu/api/v1/buildings.xml");
+  $buildings = simplexml_load_file("https://maps.uiowa.edu/api/v1/buildings.xml");
   $returnarray = array();
   foreach ($buildings->building as $element) {
     $returnarray[(string) $element->abbreviation] = (string) $element->title;

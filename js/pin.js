@@ -93,7 +93,7 @@
                     building.setMap(map);
                     google.maps.event.addListener(building, 'click', function(event){
                       infoWindow = new google.maps.InfoWindow();
-                      infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="http://maps.uiowa.edu/'+index+'">'+value+'</a></strong></p>');
+                      infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="https://maps.uiowa.edu/'+index+'">'+value+'</a></strong></p>');
                       infoWindow.setPosition(event.latLng);
                       infoWindow.open(map);
                     });
@@ -123,7 +123,7 @@
                   building.setMap(map);
                   google.maps.event.addListener(building, 'click', function(event){
                     infoWindow = new google.maps.InfoWindow();
-                    infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="http://maps.uiowa.edu/'+index+'">'+value+'</a></strong></p>');
+                    infoWindow.setContent('<p style="padding: 10px; margin: 0;"><strong><a href="https://maps.uiowa.edu/'+index+'">'+value+'</a></strong></p>');
                     infoWindow.setPosition(event.latLng);
                     infoWindow.open(map);
                   });
@@ -139,7 +139,7 @@
             function(data){
               for(var i = 0; i < data.features.length; i++){
                   var point = Proj4js.transform(new Proj4js.Proj('EPSG:3418'), new Proj4js.Proj('WGS84'), new Proj4js.Point([data.features[i].geometry.x,data.features[i].geometry.y] ));
-                  var image = 'http://maps.uiowa.edu/files/maps.uiowa.edu/files/styles/large/public/disability.png';
+                  var image = 'https://maps.uiowa.edu/files/maps.uiowa.edu/files/styles/large/public/disability.png';
                   var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(point.y, point.x),
                     map: map,

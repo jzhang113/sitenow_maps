@@ -133,7 +133,7 @@ function individual_building_render($subtype, &$conf, $panel_args, $context) {
   }
 
   // Loads the building data from the maps site. More building data inception!
-  $info = simplexml_load_file("http://maps.uiowa.edu/api/v1/" . $building . "/detail.xml");
+  $info = simplexml_load_file("https://maps.uiowa.edu/api/v1/" . $building . "/detail.xml");
 
   $metadata = '';
   if ($conf['address']) {
